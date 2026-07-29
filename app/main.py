@@ -1,24 +1,32 @@
+
+from fastapi import APIRouter
 from fastapi import FastAPI
-app=FastAPI()
+from app.routes import router
+from app.services import register_student
+
+app = FastAPI()
+
+app.include_router(router)
+router = APIRouter()
 students = []
-@app.get("/")
+@router.get("/")
 def home():
     return{
         "message":"Welcome to AI Teacher"
     }
-@app.get("/about")
+@router.get("/about")
 def about():
     return{
         "project":"AI Teacher",
         "version":"1.0",
         "developer":"Akshaya"
     }
-@app.get("/health")
+@router.get("/health")
 def health():
     return{
         "status":"Server Running"
     }
-@app.get("/subjects")
+@router.get("/subjects")
 def subjects():
     return{
     "subjects": [
@@ -33,13 +41,13 @@ from pydantic import BaseModel
 class Question(BaseModel):
     question: str
 
-@app.post("/ask")
+@router.post("/ask")
 def ask_ai(data:Question):
     return{
         "received_question":data.question,
         "answer":"AI answer will come here."
     }
-@app.post("/ask_with_details")
+@router.post("/ask_with_details")
 def ask_ai_with_details(data: dict):
     return{
         "received_question": data.question,
@@ -52,16 +60,10 @@ class Student(BaseModel):
     age: int
     class_name: int
     email: str
-
-@app.post("/register")
+@router.post("/register")
 def register(student: Student):
-    students.append(student)
+    return register_student(student)
 
-    return {
-        "message": "Student Registered Successfully",
-        "student": student
-    }
-
-@app.get("/students")
+@router.get("/students")
 def get_students():
     return students
