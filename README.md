@@ -2,7 +2,7 @@
 
 > An AI-powered educational platform that teaches students like a real teacher using Large Language Models (LLMs), Retrieval-Augmented Generation (RAG), and conversational AI.
 
----
+----
 
 ## Overview
 
